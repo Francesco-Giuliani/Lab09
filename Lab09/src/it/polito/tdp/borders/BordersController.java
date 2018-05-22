@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 
 public class BordersController {
 
-	Model model;
+	private Model model;
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -39,5 +39,8 @@ public class BordersController {
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+	}
+	public void setModel(Model model) {
+		this.model = model;
 	}
 }
