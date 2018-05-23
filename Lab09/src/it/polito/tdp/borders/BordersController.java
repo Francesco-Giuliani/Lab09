@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 
 public class BordersController {
 
-	Model model;
+	private Model model;
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -32,12 +32,35 @@ public class BordersController {
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
 
-		txtResult.setText("Todo!");
+		String annoStr = this.txtAnno.getText();
+		
+		try {
+			int anno = Integer.parseInt(annoStr);
+			this.model.createBorderGraphUpToYear(anno);
+			
+			String situazione = model.printSituation();
+			
+			int numeroComponentiConnesse = this.model.getNumberOfConnectedComponents();
+			
+			String compConn = model.stampaComponentiConnesse();
+			
+			this.txtResult.appendText("La situazione per l'anno" + anno + " è:\n"+situazione+"\nCi sono "+
+										numeroComponentiConnesse+ " componenti connesse.");
+			
+		}catch(Exception e) {
+			this.txtResult.appendText("Input non valido. Fornisci un input valido: anno intero tra 1816 e 2016.\n");
+		}
+		
+		//txtResult.setText("Todo!");
 	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
 	}
 }

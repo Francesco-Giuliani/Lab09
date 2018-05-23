@@ -8,8 +8,13 @@ public class TestModel {
 
 		System.out.println("TestModel -- TODO");
 		
-//		System.out.println("Creo il grafo relativo al 2000");
-//		model.createGraph(2000);
+		System.out.println("Creo il grafo relativo al 1916");
+		model.createBorderGraphUpToYear(1916);
+		System.out.println(model.getGraph());
+		System.out.println("numero stati: "+model.getGraph().vertexSet().size());
+		System.out.println("numero confini: "+model.getGraph().edgeSet().size());
+		System.out.println("numero componenti connesse: "+model.getNumberOfConnectedComponents());
+		System.out.println(model.stampaComponentiConnesse());
 		
 //		List<Country> countries = model.getCountries();
 //		System.out.format("Trovate %d nazioni\n", countries.size());
