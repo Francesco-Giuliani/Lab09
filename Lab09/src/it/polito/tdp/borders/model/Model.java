@@ -22,12 +22,16 @@ public class Model {
 	private Graph<Country, DefaultEdge> graph;
 	private List<Country> countries;
 	private List<Border> borders;
+	
+	private List<Country> reachables;
+	private final int MAX_VISITS = 10000;
 
 	public Model() {
 		this.countriesIdMap = new HashMap<>();
 		this.bordersIdMap = new HashMap<>();
 		this.graph = new SimpleGraph<>(DefaultEdge.class);
 		this.bdao = new BordersDAO();
+		this.reachables = new ArrayList<>();
 		
 	}
 
@@ -53,7 +57,7 @@ public class Model {
 		
 		StringBuilder sb = new StringBuilder();
 		for(Country c : this.countries) {
-			sb.append(c.getcName()+" confina con "+this.graph.degreeOf(c)+"stati\n");
+			sb.append(c.getcName().toUpperCase()+" confina con "+this.graph.degreeOf(c)+" stati\n");
 		}
 		return sb.toString();
 	}
@@ -72,5 +76,44 @@ public class Model {
 		return sb.toString();
 	}
 	
+	public List<Country> findReachablesFrom(Country start){
+		this.reachables.clear();
+		int visitCount = 0;
+		List<Country> vicini = new ArrayList<>(Graphs.neighborListOf(this.graph, start));
+		
+		this.recursive(visitCount, vicini);
+		
+		return this.reachables;
+	}
+	
+	private void recursive(int level, List<Country> parziale) {
+		
+		if(level>=this.MAX_VISITS) {
+			return;
+		}
+		if(parziale.isEmpty()) {
+			return;
+		}
+		
+		for(Country c: parziale) {
+			if(!this.reachables.contains(c)) {
+				this.reachables.add(c);			
+				List <Country> vicini= 	new ArrayList<>(Graphs.neighborListOf(this.graph, c));
+				this.recursive(level+1, vicini);
+			}
+		}
+	}
+
+	public List<Country> getCountries() {
+		return this.countries;
+	}
+
+	public Map<Country, Integer> getCountryCounts(){
+		Map<Country, Integer> stats = new HashMap<>();
+		for(Country c: this.countries) {
+			stats.put(c, Graphs.neighborListOf(this.graph, c).size());
+		}
+		return stats;
+	}
 	
 }

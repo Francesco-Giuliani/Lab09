@@ -73,7 +73,7 @@ public class Country {
 
 	@Override
 	public String toString() {
-		return "["+cCode + ", " + cId+"]"; //+ ", " + cName; //+ borders;
+		return "["+cName.toUpperCase()+", "+cCode + ", " + cId+"]\n"; //+ ", " + cName; //+ borders;
 	}
 	
 	
