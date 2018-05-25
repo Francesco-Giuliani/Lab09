@@ -2,6 +2,7 @@ package it.polito.tdp.borders.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class Model {
 		
 		StringBuilder sb = new StringBuilder();
 		for(Country c : this.countries) {
-			sb.append(c.getcName()+" confina con "+this.graph.degreeOf(c)+"stati\n");
+			sb.append(c.getcName()+" confina con "+this.graph.degreeOf(c)+" stati\n");
 		}
 		return sb.toString();
 	}
@@ -70,6 +71,20 @@ public class Model {
 			sb.append("Componente connessa:\n"+sc.toString()+"\nDimensione: "+sc.size()+"\n");
 		}
 		return sb.toString();
+	}
+	
+	public Set<Country> findAllReachableCountries(Country country){
+	
+		try {
+			if(this.graph == null || (this.graph.edgeSet().isEmpty() && this.graph.vertexSet().isEmpty())) 
+				throw new NoGraphException();
+		} catch (NoGraphException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		ConnectivityInspector<Country, DefaultEdge> ci = new ConnectivityInspector<>(this.graph);
+		return ci.connectedSetOf(country);	
 	}
 	
 	
