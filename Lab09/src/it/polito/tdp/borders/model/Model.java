@@ -11,6 +11,7 @@ import org.jgrapht.Graphs;
 import org.jgrapht.alg.ConnectivityInspector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
 
 import it.polito.tdp.borders.db.BordersDAO;
 
@@ -71,6 +72,36 @@ public class Model {
 		}
 		return sb.toString();
 	}
+	
+	public List<Country> findReachableCountriesFrom(Country c){
+		List<Country> reachables = new ArrayList<>();
+		
+		BreadthFirstIterator<Country, DefaultEdge> bfi = new BreadthFirstIterator<>(this.graph, c);
+		
+		Country nxt; 
+		
+		while( bfi.hasNext()) {
+			if(!reachables.contains(nxt = bfi.next())) {
+				reachables.add(nxt);
+			}else
+				bfi.remove();
+		}
+		return reachables;
+	}
+
+	public List<Country> getCountries() {
+		// TODO Auto-generated method stub
+		return this.countries;
+	}
+
+	public Map<Country, Integer> getCountryCounts() {
+		Map<Country, Integer> stat = new HashMap<>();
+		for(Country c : this.countries)
+			stat.put(c, Graphs.neighborListOf(this.graph, c).size());
+		
+		return stat;
+	}
+	
 	
 	
 }
