@@ -55,7 +55,7 @@ public class BordersDAO {
 		String sql = "SELECT c.state1no s1num, c1.StateAbb s1abb, c1.StateNme s1name, "+ 
 						"c.state2no s2num, c2.StateAbb s2abb, c2.StateNme s2name, c.year "+
 						"from contiguity as c, country as c1, country as c2 "+ 
-						"where year <= ? and c.state1no = c1.CCode and c.state2no = c2.CCode";
+						"where year <= ? and c.state1no = c1.CCode and c.state2no = c2.CCode and c.conttype=1";
 						
 		List<Border> borders = new ArrayList<>();
 		
